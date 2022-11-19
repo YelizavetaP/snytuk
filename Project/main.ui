@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1140</width>
+    <height>822</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>110</y>
+      <width>301</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Кількість кур'єрів</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_2">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Кількість кур'єрів з авто</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLineEdit" name="n"/>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="m">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Швидкість кур'єра</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_4">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Швіидкість авто</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLineEdit" name="vk"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="va"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Зарплата кур'єра</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="label_6">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Вартість пального</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="a_pay"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLineEdit" name="k_pay"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="load_data">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 170, 0);</string>
+       </property>
+       <property name="text">
+        <string>Розрахувати</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QPushButton" name="browseFileButton">
+         <property name="text">
+          <string>Завантажити з файлу</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Зберегти результат</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>520</y>
+      <width>1041</width>
+      <height>271</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="resultTub">
+     <attribute name="title">
+      <string>Результат</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="logTab">
+     <attribute name="title">
+      <string>Процес</string>
+     </attribute>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>40</y>
+      <width>261</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLineEdit" name="rowCount"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="changeCount">
+       <property name="text">
+        <string>Змінити кількість посилок</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTableWidget" name="parcelsTable">
+    <property name="geometry">
+     <rect>
+      <x>535</x>
+      <y>110</y>
+      <width>281</width>
+      <height>401</height>
+     </rect>
+    </property>
+    <row>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>2</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>3</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>4</string>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>Вага</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Висота</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Ширина</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Довжина</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QTableWidget" name="distanceTable">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>110</y>
+      <width>461</width>
+      <height>401</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::StrongFocus</enum>
+    </property>
+    <row>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>2</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>3</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>4</string>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>2</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>3</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>4</string>
+     </property>
+    </column>
+    <item row="0" column="0">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
+    <item row="1" column="1">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
+    <item row="2" column="2">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
+    <item row="3" column="3">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1140</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
