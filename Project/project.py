@@ -3,6 +3,8 @@ import numpy as np
 import random
 import sys
 
+# import main
+
 
 # population_size = 10
 # n = 5           #к-сть кур'єрів піших
@@ -441,22 +443,10 @@ class Individ(object):
 
             
 
-def generate_package(num):
+def generate_package(packeges):
     packages=[]
-    for i in range(num):
-        address = i%5+1
-        if i <num/2:
-            weight = round(np.random.uniform(0.05,5),2)
-        else:
-            weight = round(np.random.uniform(50,80),2)
-        if weight >max_weight_human:
-            size = np.random.uniform(0.3,1,3)
-        else:
-            if weight>0.2:
-                size = np.random.uniform(0.1,0.3,3)
-            else:
-                size = np.random.uniform(0.1,0.3,2)
-        packages.append(Package(address,weight,size))
+    for pack in packeges:
+        packages.append(Package(int(pack[0]-1),pack[1],pack[2:]))
     return packages
 
 
@@ -493,24 +483,20 @@ def generate_package(num):
 #             N+=1
 
 #         print(pop.best)
+
 #сюди передадуться параметри
-def run():
+def run(n_, m_, pCount, dCount, vk_, va_, distance, parcels, k_pay, a_pay):
     population_size = 10
     max_iter =100
-    global n,m,vk,d,va,zk,tsa,max_weight_car,max_size_car,max_weight_human,max_size_human
-    n = 5           #к-сть кур'єрів піших
-    m = 5            #к-сть машин
-    p = 10         #к-сть пакунків # Ліза сюди передаш дані пакунків
-    d = [[0.0,10,5.0,3.0,8.0,4.2],
-        [10,0.0,4.0,2.0,4.7,7.0],
-        [5.0,4.0,0.0,10,5.5,2.2],
-        [3.0,2.0,10,0.0,8.9,11],
-        [8.0,4.7,5.5,8.9,0.0,1.0],
-        [4.2,7.0,2.2,11,1.1,0.0]] #матриця відстаней
-    vk = 4           #швидкість кур'єра
-    va = 60          #швидкість машини
-    zk = 90          #зарплата кур'єра
-    tsa = 15*50         #витрата пального ????
+    global n,m,vk,d,va,zk,  tsa, max_weight_car,max_size_car,max_weight_human,max_size_human
+    n = n_           #к-сть кур'єрів піших
+    m = m_            #к-сть машин
+    p = parcels        #к-сть пакунків # Ліза сюди передаш дані пакунків
+    d = distance #матриця відстаней
+    vk = vk_           #швидкість кур'єра
+    va = va_          #швидкість машини
+    zk = k_pay          #зарплата кур'єра
+    tsa = a_pay         #витрата пального ???? у тебе в чому вимірюється? я писала просто ціну за відстань
     max_weight_car = 200
     max_size_car = 2*2*1
     max_weight_human = 5
@@ -526,8 +512,8 @@ def run():
         print("Best: ", pop.best.cost)
         N+=1
 
-    print(pop.best)
+    return pop.best
 
 
 
-run() #от ця функція запускатиме
+# run() #от ця функція запускатиме

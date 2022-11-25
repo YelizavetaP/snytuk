@@ -4,6 +4,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QFileDialog
 import json
 from PyQt5 import QtGui
+from project import run
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -13,12 +15,13 @@ class MainWindow(QMainWindow):
         
         self.fill_zero()
              
-        self.load_data.clicked.connect(self.readData)
+        self.load_data.clicked.connect(self.start)
         self.changeCount.clicked.connect(self.changeRowColCount)
         self.browseFileButton.clicked.connect(self.browseFile)
+        self.saveParamButton.clicked.connect(self.saveParam)
+
 
         self.distanceTable.itemChanged.connect(self.changeIcon)
-
 
 
     def changeIcon(self, item):
@@ -29,13 +32,10 @@ class MainWindow(QMainWindow):
         if (row < col):
             self.distanceTable.setItem(col, row, QtWidgets.QTableWidgetItem(str(widjetItem.text())))
        
-
-
-        
     def changeRowColCount(self):
-        self.distanceTable.setRowCount(int(self.rowCount.text()))
-        self.distanceTable.setColumnCount(int(self.rowCount.text()))
-        self.parcelsTable.setRowCount(int(self.rowCount.text()))
+        self.distanceTable.setRowCount(int(self.dCount.text()))
+        self.distanceTable.setColumnCount(int(self.dCount.text()))
+        self.parcelsTable.setRowCount(int(self.pCount.text()))
 
         self.fill_zero()
 
@@ -43,9 +43,9 @@ class MainWindow(QMainWindow):
         data = self.open_dialog_box()
         print(data)
 
-        self.distanceTable.setRowCount(int(data['p']))
-        self.distanceTable.setColumnCount(int(data['p']))
-        self.parcelsTable.setRowCount(int(data['p']))
+        self.distanceTable.setRowCount(int(data['dCount']))
+        self.distanceTable.setColumnCount(int(data['dCount']))
+        self.parcelsTable.setRowCount(int(data['pCount']))
 
         self.fill_zero()
 
@@ -75,13 +75,35 @@ class MainWindow(QMainWindow):
             # print(f.readline())
             return data
 
+    def saveParam(self):
 
+        n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay = self.readData()
+
+        json_data = {
+            "n":n,
+            "m": m,
+            "pCount" : pCount,
+            "dCount": dCount,
+            "va" : vk,
+            "vk" : va,
+            "distance":distance,
+            "parcels":parcels,
+            "k_pay": k_pay,
+            "a_pay": a_pay
+        }
+        
+        json_object = json.dumps(json_data, indent=10)
+
+        with open("params.json", "w") as outfile:
+            outfile.write(json_object)
+    
     def readData(self):
 
         distance, parcels = [], []
         n = int(self.n.text())
         m = int(self.m.text())
-        p = self.distanceTable.columnCount() #кількість посилок
+        dCount = self.distanceTable.rowCount() #кількість адрес
+        pCount = self.parcelsTable.rowCount() #кількість посилок
 
         vk = float(self.vk.text())
         va = float(self.va.text())
@@ -89,7 +111,7 @@ class MainWindow(QMainWindow):
         k_pay = float(self.k_pay.text())
         a_pay = float(self.a_pay.text())
 
-        print(n, m, p, vk, va, k_pay, a_pay)
+        print(n, m, dCount, pCount, vk, va, k_pay, a_pay)
 
         for row in range(self.distanceTable.rowCount()):
             rowData = []
@@ -112,11 +134,8 @@ class MainWindow(QMainWindow):
             parcels.append(rowData)
         print(parcels)
     
-        return distance, parcels, n, m, p, vk, va, k_pay, a_pay
-    
-
-
-    # 0 по діагоналі
+        return  n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay
+   
     def fill_zero(self):        
         for row in range(self.distanceTable.columnCount()):
             self.distanceTable.setRowHeight(row,50)
@@ -132,23 +151,16 @@ class MainWindow(QMainWindow):
 
         
         
-            
+    def start(self):
+        n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay = self.readData()
+        
+        result = run(n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay)
+        # очищать
+        self.results.insertPlainText(str(result))
+
+                  
 
 
-
-
-
-    # def loadData(self):
-    #     address = [
-    #         {"1":'2', '2': 20, '3': 30, '4':40},
-    #         {'2':20, '2': '', '3': 50, '4':70},
-    #         {'3':30, '2': 50, '3': '', '4':30},
-    #         {'4':40, '2': 70, '3': 30, '4': ''}
-    #     ]
-    #     row = 0
-    #     for a in address:
-    #         self.tableWidget.setItem(row, 0, QTableWidgetItem(a["1"]))
-    #         row += 1       
 
 
 app = QApplication(sys.argv)
