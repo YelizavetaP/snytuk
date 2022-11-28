@@ -1,0 +1,62 @@
+
+Route 0:
+Type: Car
+Packages:
+Address: 2, Weight: 1.0, Size: [0.5, 1.3, 0.1]
+Address: 2, Weight: 1.0, Size: [3.5, 0.7, 0.1]
+Address: 2, Weight: 1.0, Size: [7.5, 0.3, 0.1]
+Address: 1, Weight: 0.2, Size: [0.5, 3.3, 0.1]
+Address: 1, Weight: 0.1, Size: [0.5, 0.3, 0.1]
+Address: 4, Weight: 0.2, Size: [0.15, 0.3, 0.1]
+Address: 4, Weight: 0.2, Size: [0.5, 1.3, 0.1]
+Address: 5, Weight: 0.1, Size: [0.5, 0.3, 4.1]
+Cost of route: 170.09999999999997
+Weight 3.8 out of 200, Size 1.4m3 out of 4m3
+
+Route 1:
+Type: Car
+Packages:
+Empty
+
+Route 2:
+Type: Car
+Packages:
+Empty
+
+Route 3:
+Type: Car
+Packages:
+Address: 3, Weight: 2.1, Size: [0.8, 0.3, 0.1]
+Cost of route: 54.0
+Weight 2.1 out of 200, Size 0.02m3 out of 4m3
+
+Route 4:
+Type: Car
+Packages:
+Empty
+
+Route 5:
+Type Human
+Packages:
+Empty
+
+Route 6:
+Type Human
+Packages:
+Empty
+
+Route 7:
+Type Human
+Packages:
+Empty
+
+Route 8:
+Type Human
+Packages:
+Empty
+
+Route 9:
+Type Human
+Packages:
+Empty
+Cost of delivery: 224.1

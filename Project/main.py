@@ -1,30 +1,35 @@
 import sys
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QFileDialog, QMessageBox, QHeaderView
 import json
 from PyQt5 import QtGui
 from project import run
+import os
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        path = r'C:\\Users\ASUS\labs\EO\eo_rep\EOlabs2022\Project\main.ui'
+        path = r'C:\\Users\ASUS\labs\project\snytuk\Project\main.ui'
         loadUi(path, self)
         
-        self.fill_zero()
+        self.tablesLook()
              
         self.load_data.clicked.connect(self.start)
         self.changeCount.clicked.connect(self.changeRowColCount)
         self.browseFileButton.clicked.connect(self.browseFile)
         self.saveParamButton.clicked.connect(self.saveParam)
+        self.saveResButton.clicked.connect(self.saveRes)
 
 
-        self.distanceTable.itemChanged.connect(self.changeIcon)
+
+        self.distanceTable.itemChanged.connect(self.changItem)
+
+        self.result = ''
 
 
-    def changeIcon(self, item):
+    def changItem(self, item):
         row = item.row()
         col = item.column()
         widjetItem = self.distanceTable.item(row, col)
@@ -33,11 +38,22 @@ class MainWindow(QMainWindow):
             self.distanceTable.setItem(col, row, QtWidgets.QTableWidgetItem(str(widjetItem.text())))
        
     def changeRowColCount(self):
-        self.distanceTable.setRowCount(int(self.dCount.text()))
-        self.distanceTable.setColumnCount(int(self.dCount.text()))
-        self.parcelsTable.setRowCount(int(self.pCount.text()))
 
-        self.fill_zero()
+        try:
+
+            self.distanceTable.setRowCount(int(self.dCount.text()))
+            self.distanceTable.setColumnCount(int(self.dCount.text()))
+            self.parcelsTable.setRowCount(int(self.pCount.text()))
+
+            self.tablesLook()
+
+        except:
+            
+            noData = QMessageBox()
+            noData.setWindowTitle('Помилка')
+            noData.setText('Значення не введено')
+            noData.setIcon(QMessageBox.Information)
+            noData.exec_() 
 
     def browseFile(self):
         data = self.open_dialog_box()
@@ -47,7 +63,7 @@ class MainWindow(QMainWindow):
         self.distanceTable.setColumnCount(int(data['dCount']))
         self.parcelsTable.setRowCount(int(data['pCount']))
 
-        self.fill_zero()
+        self.tablesLook()
 
         for row in range(self.distanceTable.rowCount()):
             for col in range(self.distanceTable.columnCount()):
@@ -77,28 +93,42 @@ class MainWindow(QMainWindow):
 
     def saveParam(self):
 
-        n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay = self.readData()
+        try:
 
-        json_data = {
-            "n":n,
-            "m": m,
-            "pCount" : pCount,
-            "dCount": dCount,
-            "va" : vk,
-            "vk" : va,
-            "distance":distance,
-            "parcels":parcels,
-            "k_pay": k_pay,
-            "a_pay": a_pay
-        }
-        
-        json_object = json.dumps(json_data, indent=10)
+            n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay = self.readData()
 
-        with open("params.json", "w") as outfile:
-            outfile.write(json_object)
+        except:
+            
+            print('no data')
+            noData = QMessageBox()
+            noData.setWindowTitle('Некоректні дані')
+            noData.setText('Дані не введено або введено некоректно.')
+            noData.setIcon(QMessageBox.Information)
+            noData.exec_()  
+
+        else:
+
+            json_data = {
+                "n":n,
+                "m": m,
+                "pCount" : pCount,
+                "dCount": dCount,
+                "va" : vk,
+                "vk" : va,
+                "distance":distance,
+                "parcels":parcels,
+                "k_pay": k_pay,
+                "a_pay": a_pay
+            }
+            
+            json_object = json.dumps(json_data, indent=10)
+            path = "params\params" + str(len(os.listdir('params'))) + ".json"
+            with open(path, "w") as outfile:
+                outfile.write(json_object)
     
     def readData(self):
 
+        
         distance, parcels = [], []
         n = int(self.n.text())
         m = int(self.m.text())
@@ -117,7 +147,6 @@ class MainWindow(QMainWindow):
             rowData = []
             for col in range(self.distanceTable.columnCount()):
                 widjetItem = self.distanceTable.item(row, col)
-                print(widjetItem)
                 if (widjetItem and widjetItem.text):
                     rowData.append(float(widjetItem.text()))
                 else: rowData.append('')
@@ -135,28 +164,63 @@ class MainWindow(QMainWindow):
         print(parcels)
     
         return  n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay
+      
    
-    def fill_zero(self):        
+    def tablesLook(self):        
         for row in range(self.distanceTable.columnCount()):
-            self.distanceTable.setRowHeight(row,50)
-            self.parcelsTable.setRowHeight(row, 50)
+            
             for col in range(self.distanceTable.columnCount()):
-                self.distanceTable.setColumnWidth(col,50)
+                
                 if(row == col): 
                     self.distanceTable.setItem(row, col, QtWidgets.QTableWidgetItem('0'))
                     self.distanceTable.item(row, col).setBackground(QtGui.QColor(232,236,235))
             
-            for col in range(self.parcelsTable.columnCount()):
-                self.parcelsTable.setColumnWidth(col,80)
+        self.distanceTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.distanceTable.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
-        
+        self.parcelsTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.parcelsTable.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+
+    def saveRes(self):
+
+        if self.result == '':
+            print('no data')
+            noData = QMessageBox()
+            noData.setWindowTitle('Немає даних')
+            noData.setText('Немає даних  для збереження. Спочатку введіть параметри та запустіть розрахунок.')
+            noData.setIcon(QMessageBox.Information)
+            noData.exec_()
+        else:
+            filename = r'result\result' + str(len(os.listdir('result'))) + '.txt'
+            with open(filename, "w") as outfile:
+                outfile.write(self.result)
+
+        return
         
     def start(self):
-        n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay = self.readData()
+
+        try:
+            
+            n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay = self.readData()
+
+        except:
+            
+            print('no data')
+            noData = QMessageBox()
+            noData.setWindowTitle('Помилка розрахунку')
+            noData.setText('Дані не введено або введено некоректно.')
+            noData.setIcon(QMessageBox.Information)
+            noData.exec_()      
+
+        else:
         
-        result = run(n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay)
-        # очищать
-        self.results.insertPlainText(str(result))
+
+            self.results.clear()
+
+            self.result = str(run(n, m, pCount, dCount, vk, va, distance, parcels, k_pay, a_pay))
+            
+            self.results.insertPlainText(self.result)
 
                   
 
@@ -167,7 +231,7 @@ app = QApplication(sys.argv)
 mainwindow = MainWindow()
 widjet = QtWidgets.QStackedWidget()
 widjet.addWidget(mainwindow)
-widjet.setMinimumSize(1150,850)
+widjet.setMinimumSize(1183,822)
 
 widjet.show()
 
