@@ -11,7 +11,7 @@ import os
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        path = r'C:\\Users\ASUS\labs\project\snytuk\Project\main.ui'
+        path = r'D:\\7semestr\\Evolution\\Project\\Project\\main.ui'
         loadUi(path, self)
         
         self.tablesLook()

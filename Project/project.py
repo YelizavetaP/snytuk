@@ -67,20 +67,21 @@ class population(object):
 
     def generate_population(self,m,n):
         if self.doPackegesFit()==False:
-            print("It is imposible to destribute all packeges as we don't have enough technical or human resourses")
-            sys.exit()
-            
-            
+            return(False)
+  
         self.packages = sorted(self.packages, key=lambda x:x.Weight, reverse=True)
         self.population=[]
         for _ in range(self.population_size):
             new_ind =Individ(m,n,clear=False,packages=self.packages)
             if new_ind.Delivery:
                 self.population.append(new_ind)  #check if returned None
+            else:
+                return(False)
         
         self.fitness() 
         sortedPop=sorted(self.population, key=lambda x: x.cost)[:self.population_size]
         self.best = sortedPop[0]
+        return(True)
     
     def doPackegesFit(self):
         weight=0.
@@ -197,7 +198,6 @@ class Individ(object):
         [deliveries.append([]) for _ in range(n)]
         
         if clear==False:
-            countFails = 0.
             flag=True
             for pack in packages:
                 if pack.detect_type()=="Car":
@@ -235,11 +235,9 @@ class Individ(object):
                         deliveries = []
                         break
 
-            if flag==False:
-                print("Could not find the route, try to increase resourses")
-                sys.exit()
-            self.Delivery = deliveries
-            self.count_cost()
+            if flag==True:   
+                self.Delivery = deliveries
+                self.count_cost()
         else:
             self.Delivery = deliveries
 
@@ -504,15 +502,18 @@ def run(n_, m_, pCount, dCount, vk_, va_, distance, parcels, k_pay, a_pay):
 
     packages = generate_package(p)
     pop = population(population_size,packages = packages)
-    pop.generate_population(m,n)
-    N=0
-    while N<max_iter:
-        pop.mutate()
-        print("General Fit: ",pop.fit)
-        print("Best: ", pop.best.cost)
-        N+=1
+    status =pop.generate_population(m,n)
+    if status:
+        N=0
+        while N<max_iter:
+            pop.mutate()
+            print("General Fit: ",pop.fit)
+            print("Best: ", pop.best.cost)
+            N+=1
 
-    return pop.best
+        return pop.best
+    else:
+        return "Couldn't destribute all packeges as we don't have enough technical or human resourses"
 
 
 
