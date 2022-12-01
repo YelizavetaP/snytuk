@@ -184,7 +184,9 @@ class Individ(object):
                 weight+= pack.Weight
                 if len(pack.Size)==3:
                     size+= pack.Size[0]+pack.Size[1]+pack.Size[2]
-                if weight<=max_weight_human and size <= max_size_human:
+                if i>m and weight<=max_weight_human and size <= max_size_human:
+                    return i
+                elif i<m and weight<=max_weight_car and size <= max_size_car:
                     return i
             return None
 
@@ -450,37 +452,6 @@ def generate_package(packeges):
 
 
 
-# class algorithm(object):
-#     def __init__(self,max_iter,pop_size, n,m,packs,distance,vk,va,zk,tsa,max_weight_car=200,max_size_car=2*2*1, max_weight_human=5,max_size_human=0.3*0.3*0.3):
-#         self.population = None
-#         self.max_iter = max_iter
-#         self.pop_size = pop_size
-#         self.distances = distance
-#         self.n = n
-#         self.m=m
-#         self.p = packs
-#         self.vk = vk
-#         self.va = va
-#         self.zk = zk
-#         self.tsa = tsa
-#         self.max_weight_car = max_weight_car
-#         self.max_size_car  = max_size_car
-#         self.max_size_human = max_size_human
-#         self.max_weight_human = max_weight_human
-
-#     def run(self):
-#         packages = generate_package(p)
-#         pop = population(self.pop_size,packages = packages)
-#         pop.generate_population(self.m,self.n)
-
-#         N=0
-#         while N<self.max_iter:
-#             pop.mutate()
-#             print("General Fit: ",pop.fit)
-#             print("Best: ", pop.best.cost)
-#             N+=1
-
-#         print(pop.best)
 
 #сюди передадуться параметри
 def run(n_, m_, pCount, dCount, vk_, va_, distance, parcels, k_pay, a_pay):
@@ -489,14 +460,14 @@ def run(n_, m_, pCount, dCount, vk_, va_, distance, parcels, k_pay, a_pay):
     global n,m,vk,d,va,zk,  tsa, max_weight_car,max_size_car,max_weight_human,max_size_human
     n = n_           #к-сть кур'єрів піших
     m = m_            #к-сть машин
-    p = parcels        #к-сть пакунків # Ліза сюди передаш дані пакунків
+    p = parcels        #к-сть пакунків 
     d = distance #матриця відстаней
     vk = vk_           #швидкість кур'єра
     va = va_          #швидкість машини
     zk = k_pay          #зарплата кур'єра
     tsa = a_pay         #витрата пального ???? у тебе в чому вимірюється? я писала просто ціну за відстань
     max_weight_car = 200
-    max_size_car = 2*2*1
+    max_size_car = 2*2*2
     max_weight_human = 5
     max_size_human = 0.3*0.3*0.3
 
