@@ -3,30 +3,6 @@ import numpy as np
 import random
 import sys
 
-# import main
-
-
-# population_size = 10
-# n = 5           #к-сть кур'єрів піших
-# m = 5            #к-сть машин
-# p = 25         #к-сть пакунків
-# d = [[0.0,10,5.0,3.0,8.0,4.2],
-#      [10,0.0,4.0,2.0,4.7,7.0],
-#      [5.0,4.0,0.0,10,5.5,2.2],
-#      [3.0,2.0,10,0.0,8.9,11],
-#      [8.0,4.7,5.5,8.9,0.0,1.0],
-#      [4.2,7.0,2.2,11,1.1,0.0]] #матриця відстаней
-# vk = 4           #швидкість кур'єра
-# va = 60          #швидкість машини
-# zk = 90          #зарплата кур'єра
-# tsa = 15*50         #витрата пального ????
-# max_weight_car = 200
-# max_size_car = 2*2*1
-# max_weight_human = 5
-# max_size_human = 0.3*0.3*0.3
-
-
-
 class Package(object):
     def __init__(self,address,weight,size):
         self.Address = address
@@ -153,7 +129,10 @@ class Individ(object):
                     type="Human"
                 text+= "Cost of route: {}\n".format(self.countOneRoute(self.Delivery[i],type))
                 count = self.count_weight_size(self.Delivery[i])
-                text+= "Weight {} out of {}, Size {}m3 out of {}m3\n".format(count[0],max_weight_car,count[1],max_size_car)
+                if type=="Car":
+                    text+= "Weight {} out of {}, Size {}m3 out of {}m3\n".format(count[0],max_weight_car,count[1],max_size_car)
+                else:
+                    text+= "Weight {} out of {}, Size {}m3 out of {}m3\n".format(count[0],max_weight_human,count[1],max_size_human)
             else:
                 text+="Empty\n"
         text+="Cost of delivery: {}\n".format(round(self.cost,2))
@@ -179,8 +158,9 @@ class Individ(object):
                     return i
             return None
         if pack.detect_type()=="Human":
-            for i, route in enumerate(delivery):
-                weight, size = self.count_weight_size(route)
+            i = len(delivery)-1
+            while i >=0:
+                weight, size = self.count_weight_size(delivery[i])
                 weight+= pack.Weight
                 if len(pack.Size)==3:
                     size+= pack.Size[0]+pack.Size[1]+pack.Size[2]
@@ -188,7 +168,18 @@ class Individ(object):
                     return i
                 elif i<m and weight<=max_weight_car and size <= max_size_car:
                     return i
+                i-=1
             return None
+            # for i, route in enumerate(delivery):
+            #     weight, size = self.count_weight_size(route)
+            #     weight+= pack.Weight
+            #     if len(pack.Size)==3:
+            #         size+= pack.Size[0]+pack.Size[1]+pack.Size[2]
+            #     if i>m and weight<=max_weight_human and size <= max_size_human:
+            #         return i
+            #     elif i<m and weight<=max_weight_car and size <= max_size_car:
+            #         return i
+            # return None
 
 
 
@@ -487,5 +478,3 @@ def run(n_, m_, pCount, dCount, vk_, va_, distance, parcels, k_pay, a_pay):
         return "Couldn't destribute all packeges as we don't have enough technical or human resourses"
 
 
-
-# run() #от ця функція запускатиме
